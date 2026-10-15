@@ -1,0 +1,422 @@
+# Tools/ownership.tsv — path glob → owning area (ARCHITECTURE §1, §8; PLAN.md §3). SKEL (frozen); change only through
+# Documentation/build/requests/<AREA>.md. Read by Tools/build.sh (B2_AREA mirroring, publish-green, check-ownership, lint-names).
+# Format: <glob><TAB><owner>. `**` matches any depth, `*` matches within one path component. The most specific row wins:
+# an exact path beats every glob; among globs the one with more literal characters wins. Two different owners at the same
+# specificity for one file = doubly owned (an error). Owner ids are PLAN.md's area ids; their TAG is the id without hyphens
+# (FAM-F5A → FAMF5A), which B2_AREA, green snapshots, test folders and `core-test --area` use. READONLY and NOBODY are
+# not areas: nothing edits those paths (Tools/calibrate, Tools/workflows, the binding documents, research and design).
+
+# --- SKEL (walking skeleton; frozen after the gate)
+project.yml	SKEL
+Package.swift	SKEL
+.gitignore	SKEL
+App/Blur2oolApp.swift	SKEL
+App/RootView.swift	SKEL
+App/Info.plist	SKEL
+App/Resources/**	SKEL
+App/DesignSystem/InstrumentDesignSystem.swift	SKEL
+App/DesignSystem/InstrumentControlTouchBoundary.swift	SKEL
+App/DesignSystem/LensRefraction.swift	SKEL
+App/DesignSystem/InstrumentLensOptics.metal	SKEL
+App/Engine/EngineTypes.swift	SKEL
+App/GPU/Shaders/B2Shared.h	SKEL
+App/GPU/Shaders/B2Common.metal	SKEL
+Sources/BlurCore/Core/**	SKEL
+Sources/BlurCore/Math/**	SKEL
+Sources/BlurGPU/Core/**	SKEL
+Tests/BlurCoreTests/SKEL/**	SKEL
+Tests/BlurGPUTests/SKEL/**	SKEL
+Tests/AppTests/SKEL/**	SKEL
+UITests/SKEL/**	SKEL
+Tests/BlurCoreTests/SKELSeeds/**	SKEL
+Tests/BlurGPUTests/SKELSeeds/**	SKEL
+Tools/build.sh	SKEL
+Tools/ownership.tsv	SKEL
+Tools/shader-manifest.sh	SKEL
+Tools/GenerateIcon.swift	SKEL
+Documentation/metro-station-design-tokens.json	SKEL
+Documentation/build/requests/README.md	SKEL
+Documentation/build/requests/SKEL.md	SKEL
+Documentation/build/progress-SKELETON.md	SKEL
+Documentation/screenshots/skeleton*.png	SKEL
+
+# --- INTEGRATE
+README.md	INTEGRATE
+Documentation/build/requests.md	INTEGRATE
+Documentation/build/deferred-by-hold.md	INTEGRATE
+Documentation/build/progress-INTEGRATE.md	INTEGRATE
+Documentation/interfaces/**	INTEGRATE
+Documentation/screenshots/integrate-*.png	INTEGRATE
+Documentation/build/requests/INTEGRATE.md	INTEGRATE
+
+# --- read-only
+Tools/calibrate/**	READONLY
+Documentation/BRIEF.md	READONLY
+Documentation/SPEC.md	READONLY
+Documentation/ARCHITECTURE.md	READONLY
+Documentation/HOLD-SIMULATOR.md	READONLY
+Documentation/research/**	READONLY
+Documentation/design/**	READONLY
+
+# --- nobody (workflow orchestration and its reports)
+Tools/workflows/**	NOBODY
+Documentation/build/PLAN.md	NOBODY
+Documentation/build/verify-*.md	NOBODY
+Documentation/build/gate-*.md	NOBODY
+Documentation/build/qa-*.md	NOBODY
+Documentation/build/qafix-*.md	NOBODY
+
+# --- ENGINE (tag ENGINE)
+App/Engine/**	ENGINE
+App/AppEnvironment.swift	ENGINE
+Sources/BlurCore/Interaction/**	ENGINE
+Tests/BlurCoreTests/ENGINE/**	ENGINE
+Tests/BlurGPUTests/ENGINE/**	ENGINE
+Tests/AppTests/ENGINE/**	ENGINE
+UITests/ENGINE/**	ENGINE
+Documentation/build/progress-ENGINE.md	ENGINE
+Documentation/build/requests/ENGINE.md	ENGINE
+Documentation/screenshots/ENGINE-*.png	ENGINE
+
+# --- METRO-COMPONENTS (tag METROCOMPONENTS)
+App/DesignSystem/InstrumentPalette+Blur2ool.swift	METRO-COMPONENTS
+App/DesignSystem/HonestyBadge.swift	METRO-COMPONENTS
+App/DesignSystem/BadgedValueText.swift	METRO-COMPONENTS
+App/DesignSystem/DecimalParameterStepper.swift	METRO-COMPONENTS
+App/DesignSystem/InstrumentCrown.swift	METRO-COMPONENTS
+App/DesignSystem/InstrumentSignalPill.swift	METRO-COMPONENTS
+App/DesignSystem/InstrumentEventTiles.swift	METRO-COMPONENTS
+App/DesignSystem/InstrumentFloatingActionGroup.swift	METRO-COMPONENTS
+App/DesignSystem/SpecimenHousing.swift	METRO-COMPONENTS
+App/DesignSystem/FootprintGlyph.swift	METRO-COMPONENTS
+App/DesignSystem/ComponentGallery.swift	METRO-COMPONENTS
+Tests/BlurCoreTests/METROCOMPONENTS/**	METRO-COMPONENTS
+Tests/BlurGPUTests/METROCOMPONENTS/**	METRO-COMPONENTS
+Tests/AppTests/METROCOMPONENTS/**	METRO-COMPONENTS
+UITests/METROCOMPONENTS/**	METRO-COMPONENTS
+Documentation/build/progress-METRO-COMPONENTS.md	METRO-COMPONENTS
+Documentation/build/requests/METRO-COMPONENTS.md	METRO-COMPONENTS
+Documentation/screenshots/METRO-COMPONENTS-*.png	METRO-COMPONENTS
+
+# --- CONTENT-VIEWS (tag CONTENTVIEWS)
+App/Content/**	CONTENT-VIEWS
+Tests/BlurCoreTests/CONTENTVIEWS/**	CONTENT-VIEWS
+Tests/BlurGPUTests/CONTENTVIEWS/**	CONTENT-VIEWS
+Tests/AppTests/CONTENTVIEWS/**	CONTENT-VIEWS
+UITests/CONTENTVIEWS/**	CONTENT-VIEWS
+Documentation/build/progress-CONTENT-VIEWS.md	CONTENT-VIEWS
+Documentation/build/requests/CONTENT-VIEWS.md	CONTENT-VIEWS
+Documentation/screenshots/CONTENT-VIEWS-*.png	CONTENT-VIEWS
+
+# --- UI-SPECIMEN (tag UISPECIMEN)
+App/Render/**	UI-SPECIMEN
+App/Bench/SpecimenWindow/**	UI-SPECIMEN
+App/GPU/Shaders/B2Present.metal	UI-SPECIMEN
+Tests/BlurCoreTests/UISPECIMEN/**	UI-SPECIMEN
+Tests/BlurGPUTests/UISPECIMEN/**	UI-SPECIMEN
+Tests/AppTests/UISPECIMEN/**	UI-SPECIMEN
+UITests/UISPECIMEN/**	UI-SPECIMEN
+Documentation/build/progress-UI-SPECIMEN.md	UI-SPECIMEN
+Documentation/build/requests/UI-SPECIMEN.md	UI-SPECIMEN
+Documentation/screenshots/UI-SPECIMEN-*.png	UI-SPECIMEN
+
+# --- TESTIMAGES (tag TESTIMAGES)
+Sources/BlurCore/Specimens/**	TESTIMAGES
+App/Specimens/**	TESTIMAGES
+Tests/BlurCoreTests/TESTIMAGES/**	TESTIMAGES
+Tests/BlurGPUTests/TESTIMAGES/**	TESTIMAGES
+Tests/AppTests/TESTIMAGES/**	TESTIMAGES
+UITests/TESTIMAGES/**	TESTIMAGES
+Documentation/build/progress-TESTIMAGES.md	TESTIMAGES
+Documentation/build/requests/TESTIMAGES.md	TESTIMAGES
+Documentation/screenshots/TESTIMAGES-*.png	TESTIMAGES
+
+# --- CONTENT-LAYERS (tag CONTENTLAYERS)
+Sources/BlurCore/Content/**	CONTENT-LAYERS
+Tests/BlurCoreTests/CONTENTLAYERS/**	CONTENT-LAYERS
+Tests/BlurGPUTests/CONTENTLAYERS/**	CONTENT-LAYERS
+Tests/AppTests/CONTENTLAYERS/**	CONTENT-LAYERS
+UITests/CONTENTLAYERS/**	CONTENT-LAYERS
+Documentation/build/progress-CONTENT-LAYERS.md	CONTENT-LAYERS
+Documentation/build/requests/CONTENT-LAYERS.md	CONTENT-LAYERS
+Documentation/screenshots/CONTENT-LAYERS-*.png	CONTENT-LAYERS
+
+# --- ANALYSIS (tag ANALYSIS)
+Sources/BlurCore/Analysis/**	ANALYSIS
+Tests/BlurCoreTests/ANALYSIS/**	ANALYSIS
+Tests/BlurGPUTests/ANALYSIS/**	ANALYSIS
+Tests/AppTests/ANALYSIS/**	ANALYSIS
+UITests/ANALYSIS/**	ANALYSIS
+Documentation/build/progress-ANALYSIS.md	ANALYSIS
+Documentation/build/requests/ANALYSIS.md	ANALYSIS
+Documentation/screenshots/ANALYSIS-*.png	ANALYSIS
+
+# --- SEMANTICS (tag SEMANTICS)
+Sources/BlurCore/Semantics/**	SEMANTICS
+Tests/BlurCoreTests/SEMANTICS/**	SEMANTICS
+Tests/BlurGPUTests/SEMANTICS/**	SEMANTICS
+Tests/AppTests/SEMANTICS/**	SEMANTICS
+UITests/SEMANTICS/**	SEMANTICS
+Documentation/build/progress-SEMANTICS.md	SEMANTICS
+Documentation/build/requests/SEMANTICS.md	SEMANTICS
+Documentation/screenshots/SEMANTICS-*.png	SEMANTICS
+
+# --- CALIBRATION (tag CALIBRATION)
+Sources/BlurCore/Calibration/**	CALIBRATION
+App/Calibration/**	CALIBRATION
+Tests/BlurCoreTests/CALIBRATION/**	CALIBRATION
+Tests/BlurGPUTests/CALIBRATION/**	CALIBRATION
+Tests/AppTests/CALIBRATION/**	CALIBRATION
+UITests/CALIBRATION/**	CALIBRATION
+Documentation/build/progress-CALIBRATION.md	CALIBRATION
+Documentation/build/requests/CALIBRATION.md	CALIBRATION
+Documentation/screenshots/CALIBRATION-*.png	CALIBRATION
+
+# --- APPLE-TWINS (tag APPLETWINS)
+Sources/BlurGPU/AppleTwins/**	APPLE-TWINS
+Tests/BlurCoreTests/APPLETWINS/**	APPLE-TWINS
+Tests/BlurGPUTests/APPLETWINS/**	APPLE-TWINS
+Tests/AppTests/APPLETWINS/**	APPLE-TWINS
+UITests/APPLETWINS/**	APPLE-TWINS
+Documentation/build/progress-APPLE-TWINS.md	APPLE-TWINS
+Documentation/build/requests/APPLE-TWINS.md	APPLE-TWINS
+Documentation/screenshots/APPLE-TWINS-*.png	APPLE-TWINS
+
+# --- GPU-MEASURE (tag GPUMEASURE)
+Sources/BlurGPU/Measure/**	GPU-MEASURE
+App/GPU/Shaders/Probes.metal	GPU-MEASURE
+Tests/BlurCoreTests/GPUMEASURE/**	GPU-MEASURE
+Tests/BlurGPUTests/GPUMEASURE/**	GPU-MEASURE
+Tests/AppTests/GPUMEASURE/**	GPU-MEASURE
+UITests/GPUMEASURE/**	GPU-MEASURE
+Documentation/build/progress-GPU-MEASURE.md	GPU-MEASURE
+Documentation/build/requests/GPU-MEASURE.md	GPU-MEASURE
+Documentation/screenshots/GPU-MEASURE-*.png	GPU-MEASURE
+
+# --- GPUCHECK (tag GPUCHECK)
+Sources/blur-gpucheck/**	GPUCHECK
+Tests/BlurCoreTests/GPUCHECK/**	GPUCHECK
+Tests/BlurGPUTests/GPUCHECK/**	GPUCHECK
+Tests/AppTests/GPUCHECK/**	GPUCHECK
+UITests/GPUCHECK/**	GPUCHECK
+Documentation/build/progress-GPUCHECK.md	GPUCHECK
+Documentation/build/requests/GPUCHECK.md	GPUCHECK
+Documentation/screenshots/GPUCHECK-*.png	GPUCHECK
+
+# --- FAM-F1 (tag FAMF1)
+Sources/BlurCore/Operators/F1/**	FAM-F1
+Sources/BlurGPU/Pipelines/F1/**	FAM-F1
+App/GPU/Shaders/F1BoxTent.metal	FAM-F1
+Tests/BlurCoreTests/FAMF1/**	FAM-F1
+Tests/BlurGPUTests/FAMF1/**	FAM-F1
+Tests/AppTests/FAMF1/**	FAM-F1
+UITests/FAMF1/**	FAM-F1
+Documentation/build/progress-FAM-F1.md	FAM-F1
+Documentation/build/requests/FAM-F1.md	FAM-F1
+Documentation/screenshots/FAM-F1-*.png	FAM-F1
+
+# --- FAM-F2 (tag FAMF2)
+Sources/BlurCore/Operators/F2/**	FAM-F2
+Sources/BlurGPU/Pipelines/F2/**	FAM-F2
+App/GPU/Shaders/F2Gaussian.metal	FAM-F2
+Tests/BlurCoreTests/FAMF2/**	FAM-F2
+Tests/BlurGPUTests/FAMF2/**	FAM-F2
+Tests/AppTests/FAMF2/**	FAM-F2
+UITests/FAMF2/**	FAM-F2
+Documentation/build/progress-FAM-F2.md	FAM-F2
+Documentation/build/requests/FAM-F2.md	FAM-F2
+Documentation/screenshots/FAM-F2-*.png	FAM-F2
+
+# --- FAM-F3 (tag FAMF3)
+Sources/BlurCore/Operators/F3/**	FAM-F3
+Sources/BlurGPU/Pipelines/F3/**	FAM-F3
+App/GPU/Shaders/F3Pyramid.metal	FAM-F3
+Tests/BlurCoreTests/FAMF3/**	FAM-F3
+Tests/BlurGPUTests/FAMF3/**	FAM-F3
+Tests/AppTests/FAMF3/**	FAM-F3
+UITests/FAMF3/**	FAM-F3
+Documentation/build/progress-FAM-F3.md	FAM-F3
+Documentation/build/requests/FAM-F3.md	FAM-F3
+Documentation/screenshots/FAM-F3-*.png	FAM-F3
+
+# --- FAM-F4 (tag FAMF4)
+Sources/BlurCore/Operators/F4/**	FAM-F4
+Sources/BlurGPU/Pipelines/F4/**	FAM-F4
+App/GPU/Shaders/F4Frequency.metal	FAM-F4
+Tests/BlurCoreTests/FAMF4/**	FAM-F4
+Tests/BlurGPUTests/FAMF4/**	FAM-F4
+Tests/AppTests/FAMF4/**	FAM-F4
+UITests/FAMF4/**	FAM-F4
+Documentation/build/progress-FAM-F4.md	FAM-F4
+Documentation/build/requests/FAM-F4.md	FAM-F4
+Documentation/screenshots/FAM-F4-*.png	FAM-F4
+
+# --- FAM-F5A (tag FAMF5A)
+Sources/BlurCore/Operators/F5A/**	FAM-F5A
+Sources/BlurGPU/Pipelines/F5A/**	FAM-F5A
+App/GPU/Shaders/F5Motion.metal	FAM-F5A
+Tests/BlurCoreTests/FAMF5A/**	FAM-F5A
+Tests/BlurGPUTests/FAMF5A/**	FAM-F5A
+Tests/AppTests/FAMF5A/**	FAM-F5A
+UITests/FAMF5A/**	FAM-F5A
+Documentation/build/progress-FAM-F5A.md	FAM-F5A
+Documentation/build/requests/FAM-F5A.md	FAM-F5A
+Documentation/screenshots/FAM-F5A-*.png	FAM-F5A
+
+# --- FAM-F5B (tag FAMF5B)
+Sources/BlurCore/Operators/F5B/**	FAM-F5B
+Sources/BlurGPU/Pipelines/F5B/**	FAM-F5B
+App/GPU/Shaders/F5Temporal.metal	FAM-F5B
+Tests/BlurCoreTests/FAMF5B/**	FAM-F5B
+Tests/BlurGPUTests/FAMF5B/**	FAM-F5B
+Tests/AppTests/FAMF5B/**	FAM-F5B
+UITests/FAMF5B/**	FAM-F5B
+Documentation/build/progress-FAM-F5B.md	FAM-F5B
+Documentation/build/requests/FAM-F5B.md	FAM-F5B
+Documentation/screenshots/FAM-F5B-*.png	FAM-F5B
+
+# --- FAM-F6 (tag FAMF6)
+Sources/BlurCore/Operators/F6/**	FAM-F6
+Sources/BlurGPU/Pipelines/F6/**	FAM-F6
+App/GPU/Shaders/F6Lens.metal	FAM-F6
+Tests/BlurCoreTests/FAMF6/**	FAM-F6
+Tests/BlurGPUTests/FAMF6/**	FAM-F6
+Tests/AppTests/FAMF6/**	FAM-F6
+UITests/FAMF6/**	FAM-F6
+Documentation/build/progress-FAM-F6.md	FAM-F6
+Documentation/build/requests/FAM-F6.md	FAM-F6
+Documentation/screenshots/FAM-F6-*.png	FAM-F6
+
+# --- FAM-F7 (tag FAMF7)
+Sources/BlurCore/Operators/F7/**	FAM-F7
+Sources/BlurGPU/Pipelines/F7/**	FAM-F7
+App/GPU/Shaders/F7Varying.metal	FAM-F7
+Tests/BlurCoreTests/FAMF7/**	FAM-F7
+Tests/BlurGPUTests/FAMF7/**	FAM-F7
+Tests/AppTests/FAMF7/**	FAM-F7
+UITests/FAMF7/**	FAM-F7
+Documentation/build/progress-FAM-F7.md	FAM-F7
+Documentation/build/requests/FAM-F7.md	FAM-F7
+Documentation/screenshots/FAM-F7-*.png	FAM-F7
+
+# --- FAM-F8A (tag FAMF8A)
+Sources/BlurCore/Operators/F8A/**	FAM-F8A
+Sources/BlurGPU/Pipelines/F8A/**	FAM-F8A
+App/GPU/Shaders/F8EdgeA.metal	FAM-F8A
+Tests/BlurCoreTests/FAMF8A/**	FAM-F8A
+Tests/BlurGPUTests/FAMF8A/**	FAM-F8A
+Tests/AppTests/FAMF8A/**	FAM-F8A
+UITests/FAMF8A/**	FAM-F8A
+Documentation/build/progress-FAM-F8A.md	FAM-F8A
+Documentation/build/requests/FAM-F8A.md	FAM-F8A
+Documentation/screenshots/FAM-F8A-*.png	FAM-F8A
+
+# --- FAM-F8B (tag FAMF8B)
+Sources/BlurCore/Operators/F8B/**	FAM-F8B
+Sources/BlurGPU/Pipelines/F8B/**	FAM-F8B
+App/GPU/Shaders/F8EdgeB.metal	FAM-F8B
+Tests/BlurCoreTests/FAMF8B/**	FAM-F8B
+Tests/BlurGPUTests/FAMF8B/**	FAM-F8B
+Tests/AppTests/FAMF8B/**	FAM-F8B
+UITests/FAMF8B/**	FAM-F8B
+Documentation/build/progress-FAM-F8B.md	FAM-F8B
+Documentation/build/requests/FAM-F8B.md	FAM-F8B
+Documentation/screenshots/FAM-F8B-*.png	FAM-F8B
+
+# --- FAM-F9 (tag FAMF9)
+Sources/BlurCore/Operators/F9/**	FAM-F9
+Sources/BlurGPU/Pipelines/F9/**	FAM-F9
+App/GPU/Shaders/F9Diffusion.metal	FAM-F9
+Tests/BlurCoreTests/FAMF9/**	FAM-F9
+Tests/BlurGPUTests/FAMF9/**	FAM-F9
+Tests/AppTests/FAMF9/**	FAM-F9
+UITests/FAMF9/**	FAM-F9
+Documentation/build/progress-FAM-F9.md	FAM-F9
+Documentation/build/requests/FAM-F9.md	FAM-F9
+Documentation/screenshots/FAM-F9-*.png	FAM-F9
+
+# --- FAM-F10 (tag FAMF10)
+Sources/BlurCore/Operators/F10/**	FAM-F10
+Sources/BlurGPU/Pipelines/F10/**	FAM-F10
+App/GPU/Shaders/F10Materials.metal	FAM-F10
+App/System/**	FAM-F10
+Tests/BlurCoreTests/FAMF10/**	FAM-F10
+Tests/BlurGPUTests/FAMF10/**	FAM-F10
+Tests/AppTests/FAMF10/**	FAM-F10
+UITests/FAMF10/**	FAM-F10
+Documentation/build/progress-FAM-F10.md	FAM-F10
+Documentation/build/requests/FAM-F10.md	FAM-F10
+Documentation/screenshots/FAM-F10-*.png	FAM-F10
+
+# --- FAM-F11 (tag FAMF11)
+Sources/BlurCore/Operators/F11/**	FAM-F11
+Sources/BlurGPU/Pipelines/F11/**	FAM-F11
+App/GPU/Shaders/F11Uses.metal	FAM-F11
+Tests/BlurCoreTests/FAMF11/**	FAM-F11
+Tests/BlurGPUTests/FAMF11/**	FAM-F11
+Tests/AppTests/FAMF11/**	FAM-F11
+UITests/FAMF11/**	FAM-F11
+Documentation/build/progress-FAM-F11.md	FAM-F11
+Documentation/build/requests/FAM-F11.md	FAM-F11
+Documentation/screenshots/FAM-F11-*.png	FAM-F11
+
+# --- UI-BENCH (tag UIBENCH)
+App/Bench/**	UI-BENCH
+Tests/BlurCoreTests/UIBENCH/**	UI-BENCH
+Tests/BlurGPUTests/UIBENCH/**	UI-BENCH
+Tests/AppTests/UIBENCH/**	UI-BENCH
+UITests/UIBENCH/**	UI-BENCH
+Documentation/build/progress-UI-BENCH.md	UI-BENCH
+Documentation/build/requests/UI-BENCH.md	UI-BENCH
+Documentation/screenshots/UI-BENCH-*.png	UI-BENCH
+
+# --- UI-COMPARE (tag UICOMPARE)
+App/Bench/Compare/**	UI-COMPARE
+Tests/BlurCoreTests/UICOMPARE/**	UI-COMPARE
+Tests/BlurGPUTests/UICOMPARE/**	UI-COMPARE
+Tests/AppTests/UICOMPARE/**	UI-COMPARE
+UITests/UICOMPARE/**	UI-COMPARE
+Documentation/build/progress-UI-COMPARE.md	UI-COMPARE
+Documentation/build/requests/UI-COMPARE.md	UI-COMPARE
+Documentation/screenshots/UI-COMPARE-*.png	UI-COMPARE
+
+# --- UI-LAYERS (tag UILAYERS)
+App/Layers/**	UI-LAYERS
+Tests/BlurCoreTests/UILAYERS/**	UI-LAYERS
+Tests/BlurGPUTests/UILAYERS/**	UI-LAYERS
+Tests/AppTests/UILAYERS/**	UI-LAYERS
+UITests/UILAYERS/**	UI-LAYERS
+Documentation/build/progress-UI-LAYERS.md	UI-LAYERS
+Documentation/build/requests/UI-LAYERS.md	UI-LAYERS
+Documentation/screenshots/UI-LAYERS-*.png	UI-LAYERS
+
+# --- UI-TRACE (tag UITRACE)
+App/Trace/**	UI-TRACE
+Tests/BlurCoreTests/UITRACE/**	UI-TRACE
+Tests/BlurGPUTests/UITRACE/**	UI-TRACE
+Tests/AppTests/UITRACE/**	UI-TRACE
+UITests/UITRACE/**	UI-TRACE
+Documentation/build/progress-UI-TRACE.md	UI-TRACE
+Documentation/build/requests/UI-TRACE.md	UI-TRACE
+Documentation/screenshots/UI-TRACE-*.png	UI-TRACE
+
+# --- UI-ATLAS (tag UIATLAS)
+App/Atlas/**	UI-ATLAS
+App/Fingerprint/**	UI-ATLAS
+Tests/BlurCoreTests/UIATLAS/**	UI-ATLAS
+Tests/BlurGPUTests/UIATLAS/**	UI-ATLAS
+Tests/AppTests/UIATLAS/**	UI-ATLAS
+UITests/UIATLAS/**	UI-ATLAS
+Documentation/build/progress-UI-ATLAS.md	UI-ATLAS
+Documentation/build/requests/UI-ATLAS.md	UI-ATLAS
+Documentation/screenshots/UI-ATLAS-*.png	UI-ATLAS
+
+# --- UI-FIELDGUIDE (tag UIFIELDGUIDE)
+App/FieldGuide/**	UI-FIELDGUIDE
+Tests/BlurCoreTests/UIFIELDGUIDE/**	UI-FIELDGUIDE
+Tests/BlurGPUTests/UIFIELDGUIDE/**	UI-FIELDGUIDE
+Tests/AppTests/UIFIELDGUIDE/**	UI-FIELDGUIDE
+UITests/UIFIELDGUIDE/**	UI-FIELDGUIDE
+Documentation/build/progress-UI-FIELDGUIDE.md	UI-FIELDGUIDE
+Documentation/build/requests/UI-FIELDGUIDE.md	UI-FIELDGUIDE
+Documentation/screenshots/UI-FIELDGUIDE-*.png	UI-FIELDGUIDE

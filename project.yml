@@ -1,0 +1,117 @@
+# Blur2ool — XcodeGen spec (ARCHITECTURE.md §2). OWNER: SKEL (frozen after the gate; change only through
+# Documentation/build/requests/<AREA>.md). Modelled on AI Stuff/AssemblerToy/project.yml.
+# Never run xcodebuild on the iCloud folder: Tools/build.sh mirrors the tree to $B2_BUILD_DIR/src and generates there.
+name: Blur2ool
+options:
+  bundleIdPrefix: com.utkarsh
+  deploymentTarget:
+    iOS: '27.0'
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: '6.0'                              # Swift 6 language mode (complete strict concurrency)
+    SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated        # explicit; isolation is written in code (§5.15)
+    MARKETING_VERSION: '1.0'
+    CURRENT_PROJECT_VERSION: '1'                      # device-build passes a unique build number (the stamp check)
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    MTL_FAST_MATH: YES                                # explicit; blur-gpucheck compiles with MTLMathMode.fast to match
+    MTL_MATH_MODE: FAST
+    ENABLE_USER_SCRIPT_SANDBOXING: NO                 # Tools/shader-manifest.sh reads App/GPU/Shaders, writes the bundle
+    ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS: NO  # tokens live in code; typecheck-ios cannot see asset symbols (E-29)
+    B2_BUILD_STAMP: dev                               # build.sh passes B2_BUILD_STAMP=<AREA>-<uuid> for every phone build
+targets:
+  BlurCore:                                           # Foundation-only framework (the same sources as the SwiftPM target)
+    type: framework
+    platform: iOS
+    sources: [Sources/BlurCore]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.blur2ool.core
+        SWIFT_OPTIMIZATION_LEVEL: '-O'                # every configuration: references and canvases at -O (E-9)
+  BlurGPU:                                            # Metal encoding shared with blur-gpucheck; contains no .metal files
+    type: framework
+    platform: iOS
+    sources: [Sources/BlurGPU]
+    dependencies:
+      - target: BlurCore
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.blur2ool.gpu
+        SWIFT_OPTIMIZATION_LEVEL: '-O'
+  Blur2ool:
+    type: application
+    platform: iOS
+    sources:
+      - path: App                                     # App/GPU/Shaders/*.metal and the lens shader → default.metallib
+    dependencies:
+      - target: BlurCore
+      - target: BlurGPU
+    postCompileScripts:
+      - name: Shader sources and manifest
+        script: '"${SRCROOT}/Tools/shader-manifest.sh"'
+        basedOnDependencyAnalysis: false
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Blur2ool
+        CFBundleName: Blur2ool
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UIUserInterfaceStyle: Dark
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        ITSAppUsesNonExemptEncryption: false
+        LSApplicationCategoryType: public.app-category.education
+        B2BuildStamp: $(B2_BUILD_STAMP)               # which area's build is installed; device-session checks it
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.blur2ool
+        TARGETED_DEVICE_FAMILY: '1'
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  Blur2oolTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests/AppTests]
+    dependencies:
+      - target: Blur2ool
+      - target: BlurCore
+      - target: BlurGPU
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.blur2ool.tests
+        TARGETED_DEVICE_FAMILY: '1'
+  Blur2oolUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: Blur2ool
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.blur2ool.uitests
+        TARGETED_DEVICE_FAMILY: '1'
+schemes:
+  Blur2ool:
+    build:
+      targets:
+        Blur2ool: all
+    run:
+      config: Debug
+      environmentVariables:
+        MTL_DEBUG_LAYER: '1'                          # Metal API validation in debug runs (SDK §15 rule 8)
+    test:
+      gatherCoverageData: false
+      targets:
+        - Blur2oolTests
+        - Blur2oolUITests
